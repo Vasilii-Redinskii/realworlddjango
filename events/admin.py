@@ -40,7 +40,7 @@ class EventAdmin(admin.ModelAdmin):
     ordering = ['date_start', ]
     readonly_fields = ['display_enroll_count', 'display_places_left', ]
     inlines = [ReviewInline]
-
+    filter_horizontal = ('features', )
 
 @admin.register(models.Category)
 class CategoryAdmin(admin.ModelAdmin):
