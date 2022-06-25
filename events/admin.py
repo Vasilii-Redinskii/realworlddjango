@@ -45,7 +45,7 @@ class FeatureAdmin(admin.ModelAdmin):
 class EnrollAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'event', ]
     list_display_links = ['id', 'user', 'event', ]
-
+    list_select_related = ['user', ]
 
 @admin.register(models.Review)
 class ReviewAdmin(admin.ModelAdmin):
