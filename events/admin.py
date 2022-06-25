@@ -6,7 +6,12 @@ from utils.models import places_left, MORE50, LESS50, SOLD_AUT
 class ReviewInline(admin.TabularInline):
     model = models.Review
     readonly_fields = ('id', 'user', 'rate', 'text', 'created', 'updated')
-    can_delete = False
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
 
 class FillEventFilter(admin.SimpleListFilter):
     title = 'Заполненость'
