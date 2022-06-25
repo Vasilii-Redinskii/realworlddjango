@@ -64,7 +64,7 @@ class Event(models.Model):
     display_places_left.short_description = 'Осталось мест'
 
     class Meta:
-        ordering = ['date_start']
+        ordering = ['date_start', ]
         verbose_name_plural = 'События'  # форма единственного числа
         verbose_name = 'Событие'  # форма множественного числа
 
