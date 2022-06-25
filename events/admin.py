@@ -5,6 +5,7 @@ from utils.models import places_left, MORE50, LESS50, SOLD_AUT
 
 class ReviewInline(admin.TabularInline):
     model = models.Review
+    extra = 0
     readonly_fields = ('id', 'user', 'rate', 'text', 'created', 'updated')
 
     def has_add_permission(self, request, obj=None):
