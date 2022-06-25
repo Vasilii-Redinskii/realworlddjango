@@ -49,7 +49,7 @@ class Event(models.Model):
     is_private = models.BooleanField(default=False,  # значение по умолчанию для новых объектов
                                      verbose_name='Частное'  # название, выводимое на сайте
                                      )
-    category = models.ForeignKey(Category, null=True, on_delete=models.CASCADE, related_name='events',verbose_name='Категория')
+    category = models.ForeignKey(Category, null=True, on_delete=models.CASCADE, related_name='events', verbose_name='Категория')
     features = models.ManyToManyField(Feature, related_name='events')
 
     def display_enroll_count(self):

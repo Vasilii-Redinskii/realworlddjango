@@ -3,6 +3,11 @@ from . import models
 from utils.models import places_left, MORE50, LESS50, SOLD_AUT
 
 
+class ReviewInline(admin.TabularInline):
+    model = models.Review
+    readonly_fields = ('id', 'user', 'rate', 'text', 'created', 'updated')
+    can_delete = False
+
 class FillEventFilter(admin.SimpleListFilter):
     title = 'Заполненость'
     parameter_name = 'fill_event_filter'
@@ -28,6 +33,8 @@ class EventAdmin(admin.ModelAdmin):
     search_fields = ['title', ]
     ordering = ['date_start', ]
     readonly_fields = ['display_enroll_count', 'display_places_left', ]
+    inlines = [ReviewInline]
+
 
 @admin.register(models.Category)
 class CategoryAdmin(admin.ModelAdmin):
