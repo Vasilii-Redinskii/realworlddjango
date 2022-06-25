@@ -26,6 +26,8 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ['id', 'title', 'date_start', 'participants_number', 'is_private', 'category', 'display_enroll_count', 'display_places_left' ]
     list_filter = ['category', 'features', FillEventFilter]
     search_fields = ['title', ]
+    ordering = ['date_start', ]
+
 
 @admin.register(models.Category)
 class CategoryAdmin(admin.ModelAdmin):
