@@ -20,16 +20,22 @@ class FillEventFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         filter_list = (
-            ('MORE50', MORE50),
-            ('LESS50', LESS50),
-            ('SOLD_AUT', SOLD_AUT)
+            (MORE50, MORE50),
+            (LESS50, LESS50),
+            (SOLD_AUT, SOLD_AUT)
         )
         return filter_list
 
     def queryset(self, request, queryset):
         filter_value = self.value()
+        if filter_value == None:
+            return queryset
 
-        return queryset.filter()
+        for value in queryset:
+            if places_left(value.display_enroll_count(), value.participants_number) != filter_value:
+                queryset.exclude(id=value.id)
+
+        return queryset
 
 
 @admin.register(models.Event)
