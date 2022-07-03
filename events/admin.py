@@ -5,7 +5,7 @@ from utils.models import places_left, MORE50, LESS50, SOLD_AUT
 
 class ReviewInline(admin.TabularInline):
     model = models.Review
-    extra = 0
+    extra = 1
     readonly_fields = ('id', 'user', 'rate', 'text', 'created', 'updated')
 
     def has_add_permission(self, request, obj=None):
@@ -28,12 +28,14 @@ class FillEventFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         filter_value = self.value()
+        list_id = []
         if filter_value == None:
             return queryset
 
         for value in queryset:
-            if places_left(value.display_enroll_count(), value.participants_number) != filter_value:
-                queryset.exclude(id=value.id)
+            if filter_value in value.display_places_left():
+                list_id.append(value.id)
+        return queryset.filter(id__in=list_id)
 
         return queryset
 

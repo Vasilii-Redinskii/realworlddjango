@@ -57,15 +57,13 @@ class Event(models.Model):
 
     display_enroll_count.short_description = 'Количество записей'
 
+
     def display_places_left(self):
         result = f'{self.participants_number-self.display_enroll_count()} ({places_left(self.display_enroll_count(), self.participants_number)})'
         return result
 
     display_places_left.short_description = 'Осталось мест'
 
-    def display_fill_event(self):
-        result = f'{self.participants_number-self.display_enroll_count()} ({places_left(self.display_enroll_count(), self.participants_number)})'
-        return result
 
     class Meta:
         ordering = ['date_start', ]
