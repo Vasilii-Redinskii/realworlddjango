@@ -40,7 +40,8 @@ class FillEventFilter(admin.SimpleListFilter):
 
 @admin.register(models.Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ['id', 'title', 'date_start', 'participants_number', 'is_private', 'category', 'display_enroll_count', 'display_places_left' ]
+    list_display = ['id', 'title', 'date_start', 'participants_number', 'is_private', 'category',
+                    'display_enroll_count', 'display_places_left', 'rate', 'logo_url']
     list_filter = [FillEventFilter, 'category', 'features', ]
     search_fields = ['title', ]
     ordering = ['date_start', ]

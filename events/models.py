@@ -1,5 +1,8 @@
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+
 from utils.models import places_left
 
 
@@ -49,29 +52,43 @@ class Event(models.Model):
     is_private = models.BooleanField(default=False,  # значение по умолчанию для новых объектов
                                      verbose_name='Частное'  # название, выводимое на сайте
                                      )
-    category = models.ForeignKey(Category, null=True, on_delete=models.CASCADE, related_name='events', verbose_name='Категория')
+    category = models.ForeignKey(Category, null=True, on_delete=models.CASCADE, related_name='events',
+                                 verbose_name='Категория')
     features = models.ManyToManyField(Feature, related_name='events')
+    logo = models.ImageField(upload_to='events/logos/', blank=True, null=True)
 
     def display_enroll_count(self):
         return self.enrolls.count()
 
     display_enroll_count.short_description = 'Количество записей'
 
-
     def display_places_left(self):
-        result = f'{self.participants_number-self.display_enroll_count()} ({places_left(self.display_enroll_count(), self.participants_number)})'
+        result = f'{self.participants_number - self.display_enroll_count()} ({places_left(self.display_enroll_count(), self.participants_number)})'
         return result
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('events:event_detail', args=[str(self.pk)])
 
     display_places_left.short_description = 'Осталось мест'
 
+    @property
+    def logo_url(self):
+        return self.logo.url if self.logo else f'{settings.STATIC_URL}images/svg-icon/event.svg'
+
+    @property
+    def rate(self):
+        sum_review = 0
+        for review in self.reviews.all():
+            sum_review += review.rate
+        return round(sum_review/self.reviews.count(), 1)
 
     class Meta:
         ordering = ['date_start', ]
         verbose_name_plural = 'События'  # форма единственного числа
         verbose_name = 'Событие'  # форма множественного числа
-
-    def __str__(self):
-        return self.title
 
 
 class Enroll(models.Model):
@@ -95,5 +112,3 @@ class Review(models.Model):
     class Meta:
         verbose_name_plural = 'Отзыв на событие'  # форма единственного числа
         verbose_name = 'Отзывы на событие'  # форма множественного числа
-
-
